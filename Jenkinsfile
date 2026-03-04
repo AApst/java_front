@@ -11,6 +11,10 @@ pipeline {
 
         stage("Build container") {
             steps {
+                sh """
+                    
+                    sed -i "s|url: '*'|url: 'http://api.deployment.local.test.be/'| " src/environments/environment.ts
+                """
                 // !!!! Attention !!!! : Assurez-vous que :
                 // 1. Docker est installé et configuré sur votre machine Jenkins.
                 // 2. Votre Jenkins a les permissions nécessaires pour exécuter des commandes Docker.

@@ -6,7 +6,7 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Variable d'environnement en clair
-ENV API=deployment-back
+ENV api=deployment-back
 
 # Copier les fichiers de dépendances
 COPY package*.json ./
@@ -15,8 +15,8 @@ RUN npm install
 # Copier le reste du projet
 COPY . .
 
-# Build Angular en production
-RUN npm run build -- --configuration production
+# Build Angular
+RUN npm run build
 
 
 # ===============================

@@ -5,10 +5,11 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+# Variable d'environnement en clair
+ENV API=deployment-back
+
 # Copier les fichiers de dépendances
 COPY package*.json ./
-
-# Installer les dépendances
 RUN npm install
 
 # Copier le reste du projet
@@ -23,13 +24,10 @@ RUN npm run build -- --configuration production
 # ===============================
 FROM nginx:alpine
 
-# Supprimer la config par défaut
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copier les fichiers build Angular
 COPY --from=builder /app/dist/ /usr/share/nginx/html/
 
-# Exposer le port 80
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]

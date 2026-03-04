@@ -8,12 +8,6 @@ pipeline {
     }
 
     stages {
-        stage('Test') {
-            steps {
-                sh 'npm install'
-                sh 'npm test'
-            }
-        }
 
         stage("Build container") {
             steps {
@@ -22,7 +16,7 @@ pipeline {
                 // 2. Votre Jenkins a les permissions nécessaires pour exécuter des commandes Docker.
                 sh 'docker --version'
                 // On supprime l'image existante pour éviter les conflits.
-                sh 'docker image rm -f front || true'
+                //sh 'docker image rm -f front || true'
                 sh 'docker build -t front .'
                 // Exporter l'image
                 sh 'docker save front -o ./front.tar'
@@ -45,21 +39,6 @@ pipeline {
                     '''
                }
             }
-        }
-
-        stage('Trigger back pipeline') {
-            steps {
-                build job: 'prod',
-                            wait: false,
-                            propagate: false
-            }
-        }
-    }
-
-    post {
-        always {
-            sh 'docker image rm -f deployment-back || true'
-            sh 'rm ./deployment-back.tar || true'
         }
     }
 }

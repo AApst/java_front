@@ -13,7 +13,7 @@ RUN npm install
 COPY . .
 
 # Build Angular
-RUN npm run build
+RUN npm run build -- --configuration production
 
 
 # ===============================
